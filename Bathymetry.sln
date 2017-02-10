@@ -1,0 +1,61 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryLee", "Bathymetry.vcproj", "{34DD5B27-229D-4E22-A18B-8263C8FA27BD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageDierssen", "BathymetryImageDierssen.vcproj", "{BA8FB8E2-8AA9-44FD-9F4D-7970A9094816}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageDierssenDiffusion", "BathymetryImageDierssenDiffusion.vcproj", "{C524AD67-0214-4505-B62B-C7F99E79ED70}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageDierssenPostprocess", "BathymetryImageDierssenPostprocess.vcproj", "{6B89613C-17E1-4B33-A5CC-2C96F36236C5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageLee", "BathymetryImageLee.vcproj", "{F8B89638-6092-48A9-9F61-065D1AFF55EC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageLeeDiffuse", "BathymetryImageLeeDiffuse.vcproj", "{C40C7DF3-2D9D-472C-812F-909375A0B797}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageLeePostprocess", "BathymetryImageLeePostprocess.vcproj", "{25C890A1-C8DB-4FEB-B218-B27861862497}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryDierssen", "BathymetryDierssen.vcproj", "{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34DD5B27-229D-4E22-A18B-8263C8FA27BD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{34DD5B27-229D-4E22-A18B-8263C8FA27BD}.Debug|Win32.Build.0 = Debug|Win32
+		{34DD5B27-229D-4E22-A18B-8263C8FA27BD}.Release|Win32.ActiveCfg = Release|Win32
+		{34DD5B27-229D-4E22-A18B-8263C8FA27BD}.Release|Win32.Build.0 = Release|Win32
+		{BA8FB8E2-8AA9-44FD-9F4D-7970A9094816}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BA8FB8E2-8AA9-44FD-9F4D-7970A9094816}.Debug|Win32.Build.0 = Debug|Win32
+		{BA8FB8E2-8AA9-44FD-9F4D-7970A9094816}.Release|Win32.ActiveCfg = Release|Win32
+		{BA8FB8E2-8AA9-44FD-9F4D-7970A9094816}.Release|Win32.Build.0 = Release|Win32
+		{C524AD67-0214-4505-B62B-C7F99E79ED70}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C524AD67-0214-4505-B62B-C7F99E79ED70}.Debug|Win32.Build.0 = Debug|Win32
+		{C524AD67-0214-4505-B62B-C7F99E79ED70}.Release|Win32.ActiveCfg = Release|Win32
+		{C524AD67-0214-4505-B62B-C7F99E79ED70}.Release|Win32.Build.0 = Release|Win32
+		{6B89613C-17E1-4B33-A5CC-2C96F36236C5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6B89613C-17E1-4B33-A5CC-2C96F36236C5}.Debug|Win32.Build.0 = Debug|Win32
+		{6B89613C-17E1-4B33-A5CC-2C96F36236C5}.Release|Win32.ActiveCfg = Release|Win32
+		{6B89613C-17E1-4B33-A5CC-2C96F36236C5}.Release|Win32.Build.0 = Release|Win32
+		{F8B89638-6092-48A9-9F61-065D1AFF55EC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F8B89638-6092-48A9-9F61-065D1AFF55EC}.Debug|Win32.Build.0 = Debug|Win32
+		{F8B89638-6092-48A9-9F61-065D1AFF55EC}.Release|Win32.ActiveCfg = Release|Win32
+		{F8B89638-6092-48A9-9F61-065D1AFF55EC}.Release|Win32.Build.0 = Release|Win32
+		{C40C7DF3-2D9D-472C-812F-909375A0B797}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C40C7DF3-2D9D-472C-812F-909375A0B797}.Debug|Win32.Build.0 = Debug|Win32
+		{C40C7DF3-2D9D-472C-812F-909375A0B797}.Release|Win32.ActiveCfg = Release|Win32
+		{C40C7DF3-2D9D-472C-812F-909375A0B797}.Release|Win32.Build.0 = Release|Win32
+		{25C890A1-C8DB-4FEB-B218-B27861862497}.Debug|Win32.ActiveCfg = Debug|Win32
+		{25C890A1-C8DB-4FEB-B218-B27861862497}.Debug|Win32.Build.0 = Debug|Win32
+		{25C890A1-C8DB-4FEB-B218-B27861862497}.Release|Win32.ActiveCfg = Release|Win32
+		{25C890A1-C8DB-4FEB-B218-B27861862497}.Release|Win32.Build.0 = Release|Win32
+		{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}.Debug|Win32.Build.0 = Debug|Win32
+		{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}.Release|Win32.ActiveCfg = Release|Win32
+		{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
