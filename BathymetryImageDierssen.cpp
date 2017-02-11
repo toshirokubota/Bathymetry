@@ -18,17 +18,36 @@ const char chTransectFile[] = "C:\\Kubota\\Research\\HyperSpectralImages\\images
 int _tmain(int argc, _TCHAR* argv[])
 {
 	CInputArguments inarg(argc, argv);
-	const char* transectFile = inarg.Get("-ts", chTransectFile);
-	const char* imageFile = inarg.Get("-i", chImage2);
-	const char* paramFile = inarg.Get("-p", (char*) 0);
+	const char* transectFile = inarg.Get("-ts", (char*)0);
+	const char* imageHeaderFile = inarg.Get("-h", chImage2);
+	const char* imageDataFile = inarg.Get("-d", chImage2);
+	const char* paramFile = inarg.Get("-p", (char*)0);
 	const char* outputFile = inarg.Get("-o", "result.txt");
 	const char* comments = inarg.Get("-cm", "Comments: ");
+	if (transectFile == 0 || imageHeaderFile == 0)
+	{
+		cerr << "Missing transect file (-ts) and image header file (-h)." << endl;
+		exit(-1);
+	}
+	if (imageDataFile == 0)
+	{
+		string filename(imageHeaderFile);
+		string::size_type pos = filename.rfind(".");
+		if (pos == string::npos)
+		{
+			imageHeaderFile = (filename + ".img").c_str();
+		}
+		else
+		{
+			imageHeaderFile = (filename.substr(0, pos) + ".img").c_str();
+		}
+	}
 	CDataInterface transect;
 	transect.OpenData(transectFile);
 	CParamContainer param = transect.GetData().GetParameters();
 
 	CDataInterface image;
-	image.OpenData(imageFile);
+	image.OpenData(imageHeaderFile, imageDataFile);
 	CDierssenMethod method(paramFile);
 	int i, j, k;
 	ofstream out(outputFile, ios::out);
@@ -42,7 +61,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	out << 6 << "\t" << 3 + method.NumEstimates() << endl;
 	out << comments << endl; //descirbe any specifics about this experiment
 	out << chDate << "\t" << chTime << endl;
-	out << "Image\t" << imageFile << endl;
+	out << "ImageHeader\t" << imageHeaderFile << endl;
+	out << "ImageData\t" << imageDataFile << endl;
 	out << "Transect\t" << transectFile << endl;
 	out << "Params\t" << (paramFile==0 ? "Default": paramFile) << endl;
 	out << "X" << "\t" << "Y" << "\t";
@@ -61,7 +81,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			real x = param.GetParameter("X", k);
 			real y = param.GetParameter("Y", k);
 			cout << k << " (" << (int)x << ", " << (int)y << ")" << endl;
-			if(x != fNaN && y != fNaN)
+			if(x == x && y == y)
 			{
 				if(image.ReadData((int)x, (int)y, 1, 1)) 
 				{

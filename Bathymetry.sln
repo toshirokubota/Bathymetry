@@ -1,20 +1,22 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryLee", "Bathymetry.vcproj", "{34DD5B27-229D-4E22-A18B-8263C8FA27BD}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryLee", "Bathymetry.vcxproj", "{34DD5B27-229D-4E22-A18B-8263C8FA27BD}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageDierssen", "BathymetryImageDierssen.vcproj", "{BA8FB8E2-8AA9-44FD-9F4D-7970A9094816}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageDierssen", "BathymetryImageDierssen.vcxproj", "{BA8FB8E2-8AA9-44FD-9F4D-7970A9094816}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageDierssenDiffusion", "BathymetryImageDierssenDiffusion.vcproj", "{C524AD67-0214-4505-B62B-C7F99E79ED70}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageDierssenDiffusion", "BathymetryImageDierssenDiffusion.vcxproj", "{C524AD67-0214-4505-B62B-C7F99E79ED70}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageDierssenPostprocess", "BathymetryImageDierssenPostprocess.vcproj", "{6B89613C-17E1-4B33-A5CC-2C96F36236C5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageDierssenPostprocess", "BathymetryImageDierssenPostprocess.vcxproj", "{6B89613C-17E1-4B33-A5CC-2C96F36236C5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageLee", "BathymetryImageLee.vcproj", "{F8B89638-6092-48A9-9F61-065D1AFF55EC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageLee", "BathymetryImageLee.vcxproj", "{F8B89638-6092-48A9-9F61-065D1AFF55EC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageLeeDiffuse", "BathymetryImageLeeDiffuse.vcproj", "{C40C7DF3-2D9D-472C-812F-909375A0B797}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageLeeDiffuse", "BathymetryImageLeeDiffuse.vcxproj", "{C40C7DF3-2D9D-472C-812F-909375A0B797}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageLeePostprocess", "BathymetryImageLeePostprocess.vcproj", "{25C890A1-C8DB-4FEB-B218-B27861862497}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageLeePostprocess", "BathymetryImageLeePostprocess.vcxproj", "{25C890A1-C8DB-4FEB-B218-B27861862497}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryDierssen", "BathymetryDierssen.vcproj", "{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryDierssen", "BathymetryDierssen.vcxproj", "{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

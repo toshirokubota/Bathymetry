@@ -202,3 +202,11 @@ FakesAssemblies/
 *- Copy (*).h
 *.old
 
+#image data and header
+*.hdr
+*.img
+*.data
+
+#result file
+*.out
+

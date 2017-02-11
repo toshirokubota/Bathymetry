@@ -2,6 +2,7 @@
 #include "Utility.h"
 #include <string>
 using namespace std;
+#include "IdlDataReader.h"
 
 CDataInterface::CDataInterface()
 {
@@ -9,16 +10,19 @@ CDataInterface::CDataInterface()
 	m_Height=0;
 	m_Bands=0;
 	m_DataType = InvalidType;
+	m_IdlDataType = 0; //UNDEFINED.
 };
 
-CDataInterface::CDataInterface(const CDataInterface& data)
+/*CDataInterface::CDataInterface(const CDataInterface& data)
 {
 	m_Image = data.GetData();
-	m_Filename = data.GetFilename();
+	m_HeaderFilename = data.GetFilename();
+	m_DataFilename = data.GetDataname();
 	m_Width = data.GetWidth();
 	m_Height = data.GetHeight();
 	m_Bands = data.GetNumSpectra();
 	m_DataType = data.GetDataType();
+	m_IdlDataType = data.GetIdlDataType();
 }
 
 const CDataInterface&
@@ -32,7 +36,7 @@ CDataInterface:: operator=(const CDataInterface& data)
 	m_DataType = data.GetDataType();
 
 	return *this;
-}
+}*/
 
 bool
 CDataInterface::_OpenENVI(const char* filename)
@@ -45,15 +49,53 @@ CDataInterface::_OpenENVI(const char* filename)
 		cerr << "CDataInterface::_OpenENVI:: Cannot continue...\n";
 		return false;
 	}
-
+	
 	string sbuf1, sbuf2;
 	getline(in,sbuf1);  //ENVI
-	getline(in,sbuf1);	//description {
-	getline(in,sbuf1);	//	Applied Mask Result
+	if (sbuf1 != "ENVI") return false;
+	//look for width, height, and bands
+	m_Width = m_Height = m_Bands = 0;
+	while (!in.eof() && in.good())
+	{
+		getline(in, sbuf1);
+		if (sbuf1.find("samples") != string::npos)
+		{
+			string::size_type n = sbuf1.find("=");
+			if (n != string::npos)
+			{
+				m_Width = atoi(sbuf1.substr(n + 1).c_str());
+			}
+		}
+		else if (sbuf1.find("lines") != string::npos)
+		{
+			string::size_type n = sbuf1.find("=");
+			if (n != string::npos)
+			{
+				m_Height = atoi(sbuf1.substr(n + 1).c_str());
+			}
+		}
+		else if (sbuf1.find("bands") != string::npos)
+		{
+			string::size_type n = sbuf1.find("=");
+			if (n != string::npos)
+			{
+				m_Bands = atoi(sbuf1.substr(n + 1).c_str());
+			}
+		}
+		else if (sbuf1.find("data type") != string::npos)
+		{
+			string::size_type n = sbuf1.find("=");
+			if (n != string::npos)
+			{
+				m_IdlDataType = atoi(sbuf1.substr(n + 1).c_str());
+			}
+		}
+	}
+	/*getline(in,sbuf1);	//	Applied Mask Result
 	in >> sbuf1 >> sbuf2 >> m_Width;
 	in >> sbuf1 >> sbuf2 >> m_Height;
-	in >> sbuf1 >> sbuf2 >> m_Bands;
-	if(in.bad())
+	in >> sbuf1 >> sbuf2 >> m_Bands;*/
+	if(in.bad() || m_Width==0 || m_Height==0 || m_Bands==0)
 	{
 		in.close();
 		return false;
@@ -174,20 +216,16 @@ CDataInterface::_OpenTransect(const char* filename)
 }
 
 bool 
-CDataInterface::OpenData(const char* filename)
+CDataInterface::OpenData(const char* filename, const char* datafile)
 {
 	string sbuf;
-	m_Filename = filename;
-	string::size_type pos = m_Filename.rfind(".");
-	if(pos == string::npos)
-	{
-		m_Filename = m_Filename + ".hdr";
-	}
-	ifstream in(m_Filename.c_str(),ios::in);
-
+	m_HeaderFilename = filename;
+	m_DataFilename = datafile == 0 ? "": datafile;
+	m_IdlDataType = 0;
+	ifstream in(m_HeaderFilename.c_str(), ios::in);
 	if (in.fail())
 	{
-		cerr << "CDataInterface::OpenImage:: Failed to open " << filename << " for read.\n";
+		cerr << "CDataInterface::OpenImage:: Failed to open " << m_HeaderFilename << " for read.\n";
 		cerr << "CDataInterface::OpenImage:: Cannot continue...\n";
 		return false;
 	}
@@ -197,12 +235,12 @@ CDataInterface::OpenData(const char* filename)
 	if(sbuf == "ENVI")
 	{
 		m_DataType = ImageType;
-		return _OpenENVI(m_Filename.c_str());
+		return _OpenENVI(m_HeaderFilename.c_str());
 	}
 	else if(sbuf == "Transect")
 	{
 		m_DataType = TransectType;
-		return _OpenTransect(m_Filename.c_str());
+		return _OpenTransect(m_HeaderFilename.c_str());
 	}
 	else
 	{
@@ -213,34 +251,24 @@ CDataInterface::OpenData(const char* filename)
 
 bool CDataInterface::_ReadColumn(int x, int y)
 {
-	string imagefile;
-	string::size_type pos = m_Filename.rfind(".");
-	if(pos == string::npos)
-	{
-		imagefile = m_Filename + ".img";
-	}
-	else
-	{
-		imagefile = m_Filename.substr(0, pos) + ".img";
-	}
-	ifstream in(imagefile.c_str(),ios::in | ios::binary);
+	ifstream in(m_DataFilename.c_str(),ios::in | ios::binary);
 
 	if (in.fail())
 	{
-		cerr << "CDataInterface::ReadColumn:: Failed to open " << imagefile << " for read.\n";
+		cerr << "CDataInterface::ReadColumn:: Failed to open " << m_DataFilename << " for read.\n";
 		cerr << "CDataInterface::ReadColumn:: Cannot continue...\n";
 		return false;
 	}
+	CIDLReader<real> reader(m_IdlDataType);
 
-	int offset = (y * m_Width + x) * sizeof(float);
-	int stride = m_Width * m_Height * sizeof(float);
+	int offset = (y * m_Width + x) * reader.size();
+	int stride = m_Width * m_Height * reader.size();
 	int i;
 	vReal vdata(m_Bands);
 	for(i=0; in.good() && i<m_Bands; ++i) {
 		in.clear();
 		in.seekg(i*stride + offset);
-		float val;
-		in.read((char *) &val, sizeof(float));
+		float val = reader.readItem(in);
 		vdata[i] = (real)val;
 		//cout << "CDataInterface::_ReadColumn - " << vdata[i] << endl;
 	}
@@ -248,7 +276,7 @@ bool CDataInterface::_ReadColumn(int x, int y)
 
 	if(i < m_Bands)
 	{
-		cerr << "CDataInterface::ReadColumn:: Failed to read " << imagefile << " for read.\n";
+		cerr << "CDataInterface::ReadColumn:: Failed to read " << m_DataFilename << " for read.\n";
 		cerr << "CDataInterface::ReadColumn:: Only " << i << " elements were read instead of " << m_Bands << endl;
 		cerr << "CDataInterface::ReadColumn:: Cannot continue...\n";
 		return false;
@@ -266,24 +294,15 @@ bool CDataInterface::_ReadColumn(int x, int y)
 
 bool CDataInterface::_ReadROI(int x, int y, int width, int height)
 {
-	string imagefile;
-	string::size_type pos = m_Filename.rfind(".");
-	if(pos == string::npos)
-	{
-		imagefile = m_Filename + ".img";
-	}
-	else
-	{
-		imagefile = m_Filename.substr(0, pos) + ".img";
-	}
-	ifstream in(imagefile.c_str(),ios::in | ios::binary);
+	ifstream in(m_DataFilename.c_str(), ios::in | ios::binary);
 
 	if (in.fail())
 	{
-		cerr << "CDataInterface::ReadROI:: Failed to open " << imagefile << " for read.\n";
+		cerr << "CDataInterface::ReadROI:: Failed to open " << m_DataFilename << " for read.\n";
 		cerr << "CDataInterface::ReadROI:: Cannot continue...\n";
 		return false;
 	}
+	CIDLReader<real> reader(m_IdlDataType);
 
 	int bx = x - width/2;
 	int ex = bx + width;
@@ -301,7 +320,7 @@ bool CDataInterface::_ReadROI(int x, int y, int width, int height)
 	//int stride2 = (m_Width * m_Height - height * m_Width - width) * sizeof(float);
 	//in.seekg(offset);
 	RealImage tmpImage(m_Bands, height, width);
-	float* pdata = new float [width];
+	//float* pdata = new float [width];
 	//char* buffer1 = new char[stride1];
 	//char* buffer2 = new char[stride2];
 	int i, j, k;
@@ -311,19 +330,17 @@ bool CDataInterface::_ReadROI(int x, int y, int width, int height)
 		{
 			int offset = i * m_Width * m_Height + (j+by) * m_Width + bx;
 			in.seekg(offset * sizeof(float));
-			in.read((char *)pdata, width * sizeof(float));
+			vector<real> values = reader.readItems(in, width);
 			if (in.fail())
 			{
-				cerr << "CDataInterface::ReadImage:: Failed to read data from " << imagefile << endl;
+				cerr << "CDataInterface::ReadImage:: Failed to read data from " << m_DataFilename << endl;
 				cerr << "CDataInterface::ReadImage:: Cannot continue...\n";
 				in.close();
-				delete [] pdata;
-				pdata = 0;
 				return false;
 			}
 			for(k=0; k<width; ++k)
 			{
-				tmpImage.SetPixel(i, j, k, pdata[k]);
+				tmpImage.SetPixel(i, j, k, values[k]);
 			}
 		}
 	}
@@ -337,45 +354,30 @@ bool CDataInterface::_ReadROI(int x, int y, int width, int height)
 		m_Image.SetPixel(i, tmpImage.GetPixel(i));
 	}
 
-	delete [] pdata;
-	pdata = 0;
-
 	return true;
 }
 
 bool CDataInterface::_ReadImage(int z)
 {
-	string imagefile;
-	string::size_type pos = m_Filename.rfind(".");
-	if(pos == string::npos)
-	{
-		imagefile = m_Filename + ".img";
-	}
-	else
-	{
-		imagefile = m_Filename.substr(0, pos) + ".img";
-	}
-	ifstream in(imagefile.c_str(),ios::in | ios::binary);
+	ifstream in(m_DataFilename.c_str(),ios::in | ios::binary);
 
 	if (in.fail())
 	{
-		cerr << "CDataInterface::ReadImage:: Failed to open " << imagefile << " for read.\n";
+		cerr << "CDataInterface::ReadImage:: Failed to open " << m_DataFilename << " for read.\n";
 		cerr << "CDataInterface::ReadImage:: Cannot continue...\n";
 		return false;
 	}
-
-	int offset = (m_Width * m_Height * z) * sizeof(float);
+	CIDLReader<real> reader(m_IdlDataType);
+	int offset = (m_Width * m_Height * z) * reader.size();
 	in.seekg(offset);
 	int i;
 	float* pdata = new float [m_Width * m_Height];
-	in.read((char *)pdata, m_Width * m_Height * sizeof(float));
+	vector<real> values = reader.readItems(in, m_Width * m_Height);
 	if (in.fail())
 	{
-		cerr << "CDataInterface::ReadImage:: Failed to read data from " << imagefile << endl;
+		cerr << "CDataInterface::ReadImage:: Failed to read data from " << m_DataFilename << endl;
 		cerr << "CDataInterface::ReadImage:: Cannot continue...\n";
 		in.close();
-		delete [] pdata;
-		pdata = 0;
 		return false;
 	}
 	in.close();
@@ -383,7 +385,7 @@ bool CDataInterface::_ReadImage(int z)
 	m_Image.ResizeImage(1, m_Width, m_Height);
 	for(i=0; i<m_Width * m_Height; ++i)
 	{
-		m_Image.SetPixel(i, pdata[i]);
+		m_Image.SetPixel(i, values[i]);
 	}
 	delete [] pdata;
 	pdata = 0;
