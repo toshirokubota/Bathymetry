@@ -46,6 +46,5 @@ CDierssenDiffuseMethod::DoInversion()
 	}
 
 	bool bSuccess =	CDierssenMethod::DoInversion();
-	if(!bSuccess)
-		return false;
+	return bSuccess;
 }

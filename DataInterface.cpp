@@ -91,16 +91,22 @@ CDataInterface::_OpenENVI(const char* filename)
 			}
 		}
 	}
+	in.close();
 	/*getline(in,sbuf1);	//	Applied Mask Result
 	in >> sbuf1 >> sbuf2 >> m_Width;
 	in >> sbuf1 >> sbuf2 >> m_Height;
 	in >> sbuf1 >> sbuf2 >> m_Bands;*/
 	if(in.bad() || m_Width==0 || m_Height==0 || m_Bands==0)
 	{
-		in.close();
 		return false;
 	}
-
+	in.open(filename, ios::in);
+	if (in.fail())
+	{
+		cerr << "CDataInterface::_OpenENVI:: Failed to open " << filename << " for read.\n";
+		cerr << "CDataInterface::_OpenENVI:: Cannot continue...\n";
+		return false;
+	}
 	vector<real> vlambda(m_Bands);
 	double val;
 	while (!in.eof() && in.good()) 
@@ -114,12 +120,12 @@ CDataInterface::_OpenENVI(const char* filename)
 			{
 				in >> buffer; // >> ",";
 				sscanf(buffer, "%lf,", &val);
-				val*=1000.0;
+				//val*=1000.0;
 				vlambda[k]=(real)val;
 			}
 			in >> buffer; // >> ",";
 			sscanf(buffer, "%lf}", &val);
-			val*=1000.0;
+			//val*=1000.0; //TK - this was needed in TAMPA and LSI data...
 			vlambda[k]=val;
 		}
 		if (in.bad())
@@ -156,7 +162,7 @@ CDataInterface::_OpenTransect(const char* filename)
 	int numBands;
 	in >> numData >> numHeads >> numBands;
 
-	vector<real> vlambda(numBands, fNaN);
+	vector<real> vlambda(numBands, NaN);
 	in >> sbuf; //Lambda
 	int i, j;
 	for(i=0; i<numBands; ++i)
@@ -329,7 +335,7 @@ bool CDataInterface::_ReadROI(int x, int y, int width, int height)
 		for(j=0; j<height; ++j)
 		{
 			int offset = i * m_Width * m_Height + (j+by) * m_Width + bx;
-			in.seekg(offset * sizeof(float));
+			in.seekg(offset * reader.size());
 			vector<real> values = reader.readItems(in, width);
 			if (in.fail())
 			{

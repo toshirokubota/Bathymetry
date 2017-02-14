@@ -14,15 +14,25 @@ enum bool { false, true};
 #define _BOOL
 #endif
 
+#define _REAL_IS_DOUBLE
+#ifdef _REAL_IS_DOUBLE
 typedef double real;
+#else
+typedef float real;
+#endif
+
 typedef unsigned char uchar;
 
 typedef vector<real> vReal;
 typedef vector<int> vInt;
 
-const real fNaN =-9.9999999e37;
-const double NaN = -9.99999999999e307;
-
+const real fNaN =std::numeric_limits<float>::quiet_NaN();
+const double dNaN = std::numeric_limits<double>::quiet_NaN();
+#ifdef _REAL_IS_DOUBLE
+const real NaN = dNaN;
+#else
+const real NaN = fNaN;
+#endif
 const string strInvalid = "Invalid";
 
 #endif /* mytype_h */

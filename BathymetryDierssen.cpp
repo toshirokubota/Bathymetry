@@ -13,13 +13,14 @@ const char chImage[] = "C:\\Kubota\\Research\\HyperSpectralImages\\images\\Combi
 int _tmain(int argc, _TCHAR* argv[])
 {
 	CInputArguments inarg(argc, argv);
-	const char* imageFile = inarg.Get("-i", chImage);
-	const char* paramFile = inarg.Get("-p", (char*) 0);
+	const char* imageHeaderFile = inarg.Get("-h", chImage);
+	const char* imageDataFile = inarg.Get("-d", (char*)0);
+	const char* paramFile = inarg.Get("-p", (char*)0);
 	const char* outputFile = inarg.Get("-o", "result.txt");
 	const char* comments = inarg.Get("-cm", "Comments: ");
 
 	CDataInterface image;
-	image.OpenData(imageFile);
+	image.OpenData(imageHeaderFile, imageDataFile);
 	CParamContainer param = image.GetData().GetParameters();
 	CDierssenMethod method(paramFile);
 
@@ -36,7 +37,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	out << 5 << "\t" << 2 + method.NumEstimates() << endl;
 	out << comments << endl; //descirbe any specifics about this experiment
 	out << chDate << "\t" << chTime << endl;
-	out << "Transect\t" << imageFile << endl;
+	out << "Transect\t" << imageHeaderFile << endl;
 	out << "Params\t" << (paramFile == 0 ? "Default": paramFile) << endl;
 	out << "X" << "\t" << "Y" << "\t";
 

@@ -13,8 +13,8 @@ class CParamContainer
 {
 public:
 	CParamContainer(int n = 0, int m = 0);
-	CParamContainer(const CParamContainer& param);
-	const CParamContainer& operator = (const CParamContainer& param);
+	//CParamContainer(const CParamContainer& param);
+	//const CParamContainer& operator = (const CParamContainer& param);
 
 	int NumParams() const {return m_vNames.size();}
 	const string& GetName(int n) const
@@ -63,8 +63,10 @@ public:
 protected:
 	vector<string>		m_vNames;	
 	vector<vReal>		m_vParameters;	
+	bool m_bAuto; 
 };
 
+/*
 class CParamInterface
 {
 public:
@@ -75,5 +77,6 @@ public:
 protected:
 	CParamContainer m_Container;
 };
+*/
 
 #endif /* ___PARAM_INTERFACE_H___ */

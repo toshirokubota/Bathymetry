@@ -19,7 +19,8 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	CInputArguments inarg(argc, argv);
 	const char* transectFile = inarg.Get("-ts", chTransectFile);
-	const char* imageFile = inarg.Get("-i", chImage2);
+	const char* imageHeaderFile = inarg.Get("-h", chImage2);
+	const char* imageDataFile = inarg.Get("-d", (char*)0);
 	const char* paramFile = inarg.Get("-p", (char*) 0);
 	const char* outputFile = inarg.Get("-o", "result.txt");
 	const char* comments = inarg.Get("-cm", "Comments: ");
@@ -31,7 +32,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	CParamContainer param = transect.GetData().GetParameters();
 
 	CDataInterface image;
-	image.OpenData(imageFile);
+	image.OpenData(imageHeaderFile, imageDataFile);
 
 	CDierssenDiffuseMethod method(paramFile, alpha, numiter);
 	int i, j, k;
@@ -49,7 +50,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	out << 9 << "\t" << 3 + method.NumEstimates() << endl;
 	out << comments << endl; //descirbe any specifics about this experiment
 	out << chDate << "\t" << chTime << endl;
-	out << "Image\t" << imageFile << endl;
+	out << "Image\t" << imageHeaderFile << endl;
 	out << "Transect\t" << transectFile << endl;
 	out << "Params\t" << (paramFile==0 ? "Default": paramFile) << endl;
 	out << "Alpha\t" << alpha << endl;
@@ -71,7 +72,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			real x = param.GetParameter("X", k);
 			real y = param.GetParameter("Y", k);
 			cout << k << " (" << (int)x << ", " << (int)y << ")" << endl;
-			if(x != fNaN && y != fNaN)
+			if(x == x && y == y)
 			{
 				if(image.ReadData((int)x, (int)y, sub_width, sub_height))
 				{

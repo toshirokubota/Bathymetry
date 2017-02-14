@@ -46,7 +46,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			real x = param.GetParameter("X", k);
 			real y = param.GetParameter("Y", k);
 			cout << k << " (" << (int)x << ", " << (int)y << ")" << endl;
-			if(x != fNaN && y != fNaN)
+			if (x == x && y == y)
 			{
 				method.SetData(image.GetData(i,j));
 				method.Initialize();

@@ -14,7 +14,7 @@ CParamContainer::CParamContainer(int n, int m)
 		m_vNames.resize(n, "");
 		if(m)
 		{
-			vector<real> vnans(m, fNaN);
+			vector<real> vnans(m, NaN);
 			m_vParameters.resize(n, vnans);
 		}
 		else
@@ -24,7 +24,7 @@ CParamContainer::CParamContainer(int n, int m)
 	}
 }
 
-CParamContainer::CParamContainer(const CParamContainer& param)
+/*CParamContainer::CParamContainer(const CParamContainer& param)
 {
 	int n = param.NumParams();
 	m_vNames.clear();
@@ -49,7 +49,7 @@ CParamContainer:: operator = (const CParamContainer& param)
 	}
 
 	return *this;
-}
+}*/
 
 int 
 CParamContainer::GetLength(const string& name) const
@@ -79,7 +79,7 @@ CParamContainer::Resize(const string& name, int size)
 	{
 		int k = p - m_vNames.begin();
 		assert(k <= m_vParameters.size());
-		m_vParameters[k].resize(size, fNaN);
+		m_vParameters[k].resize(size, NaN);
 		return true;
 	}
 }
@@ -110,7 +110,7 @@ CParamContainer::GetParameter(int k, int n) const
 	}
 	else
 	{
-		return fNaN;
+		return NaN;
 	}
 }
 
@@ -120,7 +120,7 @@ CParamContainer::GetParameter(const string& name, int n) const
 	vector<string>::const_iterator p = find(m_vNames.begin(), m_vNames.end(), name);
 	if(p==m_vNames.end())
 	{
-		return fNaN;
+		return NaN;
 	}
 	else
 	{
@@ -135,12 +135,12 @@ CParamContainer::GetParameterInterpolate(const string& target, const string& ref
 	vector<string>::const_iterator p = find(m_vNames.begin(), m_vNames.end(), reference);
 	if(p==m_vNames.end())
 	{
-		return fNaN;
+		return NaN;
 	}
 	vector<string>::const_iterator q = find(m_vNames.begin(), m_vNames.end(), target);
 	if(q==m_vNames.end())
 	{
-		return fNaN;
+		return NaN;
 	}
 	
 	int i;
@@ -257,7 +257,7 @@ CParamContainer::Clear(const string& name)
 	}
 }
 
-
+/*
 CParamInterface::CParamInterface()
 {
 }
@@ -306,4 +306,4 @@ CParamInterface::OpenParameter(const char* paramfile)
 
 	return true;
 }
-
+*/

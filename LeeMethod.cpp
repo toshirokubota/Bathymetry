@@ -479,7 +479,7 @@ CLeeMethod::DoInversion()
 				cerr << "LevenbergMarquardt exception. at (" << i << ", " << j << ")\n";
 				for(k=0; k<l; ++k)
 				{
-					m_Estimate.SetParameter(k, i*m_Image.NumCols()+j, fNaN);
+					m_Estimate.SetParameter(k, i*m_Image.NumCols()+j, NaN);
 				}
 				return false;
 			}
