@@ -18,6 +18,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageLeePostproce
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryDierssen", "BathymetryDierssen.vcxproj", "{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BathymetryImageDierssenDiffusionAustria", "BathymetryImageDierssenDiffusionAustria.vcxproj", "{01AD01AB-E610-4553-B5D4-95E34CB53D6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -56,6 +58,10 @@ Global
 		{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}.Debug|Win32.Build.0 = Debug|Win32
 		{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}.Release|Win32.ActiveCfg = Release|Win32
 		{9B9B95AC-5945-41B0-BE8E-C7AF868E3C1B}.Release|Win32.Build.0 = Release|Win32
+		{01AD01AB-E610-4553-B5D4-95E34CB53D6F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{01AD01AB-E610-4553-B5D4-95E34CB53D6F}.Debug|Win32.Build.0 = Debug|Win32
+		{01AD01AB-E610-4553-B5D4-95E34CB53D6F}.Release|Win32.ActiveCfg = Release|Win32
+		{01AD01AB-E610-4553-B5D4-95E34CB53D6F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
